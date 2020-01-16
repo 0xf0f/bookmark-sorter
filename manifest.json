@@ -1,22 +1,22 @@
 {
-    "name": "Bookmark Sorter",
-    "version": "1.0",
-    "description": "Sorts bookmarks",
-    
-    "background": {
-        "page": "./source/html/background.html",
-        
-        "persistent": false
-    },
+  "name": "Bookmark Sorter",
+  "version": "1.0",
+  "description": "Sorts bookmarks",
+  
+  "background": {
+    "page": "./source/html/background.html",
+      
+    "persistent": false
+  },
 
-    "browser_action": {
-      "default_popup": "./source/html/popup.html"
-    },
-    
-    "permissions": [
-        "bookmarks",
-        "declarativeContent"
-    ],
+  "browser_action": {
+    "default_popup": "./source/html/popup.html"
+  },
+  
+  "permissions": [
+    "bookmarks",
+    "declarativeContent"
+  ],
 
-    "manifest_version": 2
-  }
+  "manifest_version": 2
+}

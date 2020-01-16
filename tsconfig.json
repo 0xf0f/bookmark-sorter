@@ -1,14 +1,13 @@
 {
-    "compilerOptions": {
-        "target": "ES2017",
-        "module": "ES2015",
-        "sourceMap": true,
-        "types": ["@types/chrome"],
-        "removeComments": true,
-        "outDir": "build/",
-        "rootDir": "./source/script/"
-        
-    },
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "ES2015",
+    "sourceMap": true,
+    "types": ["@types/chrome"],
+    "removeComments": true,
+    "outDir": "build/",
+    "rootDir": "./source/script/"
+  },
 
-    "compileOnSave": true,
+  "compileOnSave": true,
 }
