@@ -1,0 +1,12 @@
+{
+  "name": "bookmark_sorter",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@types/chrome": "0.0.91",
+    "typescript": "^3.7.5"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc-watch": "tsc -w"
+  }
+}
