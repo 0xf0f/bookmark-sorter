@@ -1,5 +1,11 @@
 {
   "name": "bookmark_sorter",
+  "description": "A chrome extension that keeps bookmarks sorted.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0xf0f/bookmark-sorter"
+  },
+  "license": "MIT",
   "version": "1.0.0",
   "devDependencies": {
     "@types/chrome": "0.0.91",
