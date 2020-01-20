@@ -1,14 +1,14 @@
 import {folder_comparator} from "./common.js"
 
 chrome.bookmarks.onCreated.addListener(
-    function (id, self) {
+    (id, self) => {
         if(self.url !== undefined) {
-            return;
+            return
         }
 
         chrome.bookmarks.getChildren(
             self.parentId,
-            function (results) {
+            results => {
                 if(results.length == 1) return
 
                 for(let other of results) {
@@ -18,7 +18,7 @@ chrome.bookmarks.onCreated.addListener(
                             {'index': other.index}
                         )
 
-                        return;
+                        return
                     }
                 }
 
@@ -27,6 +27,6 @@ chrome.bookmarks.onCreated.addListener(
                     {'index': results.length}
                 )
             }
-        );
+        )
     }
-);
+)

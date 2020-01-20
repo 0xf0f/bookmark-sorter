@@ -5,18 +5,18 @@ export interface Comparator {
     ) : boolean
 }
 
-export let page_comparator: Comparator;
-export let folder_comparator: Comparator;
+export let page_comparator: Comparator
+export let folder_comparator: Comparator
 
-page_comparator = function(self, other) {
-    if(other.url === undefined) return false;
-    return self.dateAdded < other.dateAdded;
+page_comparator = (self, other) => {
+    if(other.url === undefined) return false
+    return self.dateAdded < other.dateAdded
 }
 
-folder_comparator = function(self, other) {
+folder_comparator = (self, other) => {
     if(other.url === undefined) {
-        return self.title < other.title;
+        return self.title < other.title
     }
 
-    return false;
+    return false
 }

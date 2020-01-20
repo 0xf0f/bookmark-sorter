@@ -5,7 +5,7 @@ async function sort_folder(
     stack: chrome.bookmarks.BookmarkTreeNode[]
 ) {
     folder.children.sort(
-        function (a, b) {
+        (a, b) => {
             // console.log(a, b)
 
             if(a.url === undefined) {
@@ -43,7 +43,7 @@ async function sort_folder(
 async function sort_bookmarks() {
     chrome.bookmarks.getSubTree(
         "2",
-        async (stack) => {
+        async stack => {
             while(stack.length) {
                 let node = stack.pop()
 
@@ -56,11 +56,9 @@ async function sort_bookmarks() {
 
 document.addEventListener(
     "DOMContentLoaded",
-    function() {
-        let test_button = document.getElementById('sort_button');
-        test_button.addEventListener(
-            'click', sort_bookmarks
-        )
+    () => {
+        let test_button = document.getElementById('sort_button')
+        test_button.onclick = sort_bookmarks
     }
 )
 
