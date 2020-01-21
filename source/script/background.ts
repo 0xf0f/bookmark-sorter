@@ -1,20 +1,29 @@
-import {folder_comparator} from "./common.js"
+import {folder_comparator, Comparator, page_comparator} from "./common.js"
 
 chrome.bookmarks.onCreated.addListener(
-    (id, self) => {
-        if(self.url !== undefined) {
-            return
+    (id, bookmark) => {
+        if(bookmark.parentId == "1") {
+            // don't sort items in bookmarks bar
+            return;
+        }
+
+        let comparator: Comparator;
+
+        if(bookmark.url === undefined) {
+            comparator = page_comparator
+        } else {
+            comparator = folder_comparator
         }
 
         chrome.bookmarks.getChildren(
-            self.parentId,
+            bookmark.parentId,
             results => {
                 if(results.length == 1) return
 
                 for(let other of results) {
-                    if(folder_comparator(self, other)) {
+                    if(comparator(bookmark, other) < 1) {
                         chrome.bookmarks.move(
-                            self.id,
+                            bookmark.id,
                             {'index': other.index}
                         )
 
@@ -23,7 +32,7 @@ chrome.bookmarks.onCreated.addListener(
                 }
 
                 chrome.bookmarks.move(
-                    self.id,
+                    bookmark.id,
                     {'index': results.length}
                 )
             }

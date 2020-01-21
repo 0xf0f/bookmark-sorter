@@ -9,9 +9,9 @@ async function sort_folder(
             // console.log(a, b)
 
             if(a.url === undefined) {
-                return folder_comparator(a, b) ? -1: 1
+                return folder_comparator(a, b)
             } else {
-                return page_comparator(a, b) ? -1: 1
+                return page_comparator(a, b)
             }
         }
     )
