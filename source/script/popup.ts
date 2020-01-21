@@ -6,8 +6,6 @@ async function sort_folder(
 ) {
     folder.children.sort(
         (a, b) => {
-            // console.log(a, b)
-
             if(a.url === undefined) {
                 return folder_comparator(a, b)
             } else {
@@ -23,16 +21,7 @@ async function sort_folder(
         if(child.url === undefined) {
             stack.push(child)
         }
-
-        // console.log(
-        //     "\t".repeat(stack.length), 
-        //     index, 
-        //     child.index, 
-        //     child.id, 
-        //     child.title, 
-        //     child.url
-        // )
-
+        
         chrome.bookmarks.move(
             child.id,
             {"index": index}
