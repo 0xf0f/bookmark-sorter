@@ -10,7 +10,7 @@
   },
 
   "browser_action": {
-    "default_popup": "./source/html/popup.html"
+    "default_popup": "./source/html/options.html"
   },
 
   "options_ui": {
