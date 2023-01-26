@@ -13,6 +13,10 @@
     "default_popup": "./source/html/popup.html"
   },
   
+  "options_ui": {
+    "page": "./source/html/options.html"
+  },
+  
   "permissions": [
     "bookmarks",
     "declarativeContent"
