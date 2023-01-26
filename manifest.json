@@ -1,7 +1,7 @@
 {
   "name": "Bookmark Sorter",
   "version": "1.0",
-  "description": "Sorts bookmarks",
+  "description": "Sorts bookmarks on demand and as they're created.",
   
   "background": {
     "page": "./source/html/background.html",
@@ -10,11 +10,16 @@
   },
 
   "browser_action": {
-    "default_popup": "./source/html/popup.html"
+    "default_popup": "./source/html/options.html"
+  },
+
+  "options_ui": {
+    "page": "./source/html/options.html"
   },
   
   "permissions": [
     "bookmarks",
+    "storage",
     "declarativeContent"
   ],
 
