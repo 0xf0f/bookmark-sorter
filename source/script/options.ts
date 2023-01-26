@@ -9,6 +9,7 @@ async function saveOptions() {
     for (let key in options) {
         // console.log("key = " + key)
         let element = <HTMLInputElement> document.getElementById(key)
+        if(!element) continue;
         if(element.type == "checkbox") {
             options[key] = element.checked
         } else {
@@ -26,6 +27,7 @@ document.addEventListener(
         let options = await loadOptions()
         for (let key in options) {
             let element = <HTMLInputElement> document.getElementById(key)
+            if (!element) continue;
             if(element.type == 'checkbox') {
                 element.checked = options[key]
             } else {
