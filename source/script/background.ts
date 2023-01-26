@@ -1,6 +1,6 @@
 import {
     sortBookmark, 
-    sortBookmarks, 
+    sortAllBookmarks, 
     BackgroundMessages, 
     Message
 } from "./common.js"
@@ -18,7 +18,7 @@ function disableCallbacks() {
 }
 
 let messageResponses: BackgroundMessages = {
-    'sortAllBookmarks': message => sortBookmarks(),
+    'sortAllBookmarks': message => sortAllBookmarks(),
 }
 
 async function handleMessage(message: Message) {
@@ -46,7 +46,7 @@ chrome.runtime.onInstalled.addListener(
         if(details.reason == "install") {
             // sort bookmarks for the first time
             console.log('installed')
-            await sortBookmarks()
+            await sortAllBookmarks()
         }
     }
 )

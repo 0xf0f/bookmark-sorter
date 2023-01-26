@@ -137,7 +137,7 @@ async function moveBookmark(id: string, index: number): Promise<BookmarkTreeNode
     )
 }
 
-export async function sortBookmarks() {
+export async function sortAllBookmarks() {
     let options = await loadOptions()
     let pageComparator = getPageComparator(options)
     let folderComparator = getFolderComparator(options)
