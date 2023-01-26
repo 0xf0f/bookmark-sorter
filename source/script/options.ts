@@ -4,7 +4,7 @@ import {
     Options 
 } from "./common.js"
 
-function save_options(): Promise<void> {
+async function save_options() {
     let options = new Options()
     for (let key in options) {
         // console.log("key = " + key)
@@ -17,14 +17,7 @@ function save_options(): Promise<void> {
         // console.info(`${key} = ${element.value}`)
     }
 
-    return new Promise(
-        (resolve, reject) => {
-            chrome.storage.sync.set(
-                {"options": options}, 
-                ()=>resolve()
-            )
-        }
-    )
+    return await chrome.storage.sync.set({"options": options})
 }
 
 document.addEventListener(

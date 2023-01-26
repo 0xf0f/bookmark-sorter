@@ -120,31 +120,20 @@ export async function sort_bookmark(id) {
     await move_bookmark(bookmark.id, new_index)
 }
 
-function get_bookmark(id: string): Promise<BookmarkTreeNode> {
-    return new Promise(
-        (resolve, reject) => chrome.bookmarks.get(
-            id,
-            results => resolve(results[0])
-        )
-    )
+async function get_bookmark(id: string): Promise<BookmarkTreeNode> {
+    let results = await chrome.bookmarks.get(id)
+    return results[0]
 }
 
-function get_bookmark_tree(id: string): Promise<BookmarkTreeNode> {
-    return new Promise(
-        (resolve, reject) => chrome.bookmarks.getSubTree(
-            id,
-            results => resolve(results[0])
-        )
-    )
+async function get_bookmark_tree(id: string): Promise<BookmarkTreeNode> {
+    let results = await chrome.bookmarks.getSubTree(id)
+    return results[0]
 }
 
-function move_bookmark(id: string, index: number): Promise<BookmarkTreeNode> {
-    return new Promise(
-        (resolve, reject) => chrome.bookmarks.move(
-            id,
-            {"index": index},
-            result => resolve(result)
-        )
+async function move_bookmark(id: string, index: number): Promise<BookmarkTreeNode> {
+    return await chrome.bookmarks.move(
+        id,
+        {"index": index}
     )
 }
 
@@ -202,22 +191,15 @@ export class Options {
     // sort_other_bookmarks: boolean = true
 }
 
-export function load_options(): Promise<Options> {
-    return new Promise(
-        (resolve, reject) => {
-            chrome.storage.sync.get(
-                "options",
-                result => {
-                    if (result["options"]) {
-                        resolve(result["options"])
-                    } else {
-                        console.log("Options not found in storage, loading defaults.")
-                        resolve(new Options())
-                    }
-                }
-            )
-        },
-    )
+export async function load_options(): Promise<Options> {
+    let result = await chrome.storage.sync.get("options")
+
+    if (result["options"]) {
+        return result["options"]
+    } else {
+        console.log("Options not found in storage, loading defaults.")
+        return new Options()
+    }
 }
 
 
@@ -231,11 +213,6 @@ export interface Message {
     data?: any,
 }
 
-export function send_background_message(message: Message) {
-    return new Promise(
-        (resolve, reject) => chrome.runtime.sendMessage(
-            message,
-            response => resolve(response)
-        )
-    )
+export async function send_background_message(message: Message) {
+    return await chrome.runtime.sendMessage(message)
 }
