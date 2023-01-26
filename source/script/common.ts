@@ -120,17 +120,17 @@ export async function sortBookmark(id) {
     await moveBookmark(bookmark.id, newIndex)
 }
 
-async function getBookmark(id: string): Promise<BookmarkTreeNode> {
+async function getBookmark(id: string) {
     let results = await chrome.bookmarks.get(id)
     return results[0]
 }
 
-async function getBookmarkTree(id: string): Promise<BookmarkTreeNode> {
+async function getBookmarkTree(id: string) {
     let results = await chrome.bookmarks.getSubTree(id)
     return results[0]
 }
 
-async function moveBookmark(id: string, index: number): Promise<BookmarkTreeNode> {
+async function moveBookmark(id: string, index: number) {
     return await chrome.bookmarks.move(
         id,
         {"index": index}
