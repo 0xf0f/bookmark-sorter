@@ -1,7 +1,7 @@
 {
   "name": "Bookmark Sorter",
   "version": "1.0",
-  "description": "Sorts bookmarks on demand and as they're created.",
+  "description": "a chrome extension that keeps bookmarks sorted",
   
   "background": {
     "service_worker": "./build/background.js",
