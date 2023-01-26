@@ -1,10 +1,10 @@
 import {
-    load_options, 
-    send_background_message, 
+    loadOptions, 
+    sendBackgroundMessage, 
     Options 
 } from "./common.js"
 
-async function save_options() {
+async function saveOptions() {
     let options = new Options()
     for (let key in options) {
         // console.log("key = " + key)
@@ -23,7 +23,7 @@ async function save_options() {
 document.addEventListener(
     "DOMContentLoaded",
     async event => {
-        let options = await load_options()
+        let options = await loadOptions()
         for (let key in options) {
             let element = <HTMLInputElement> document.getElementById(key)
             if(element.type == 'checkbox') {
@@ -33,12 +33,12 @@ document.addEventListener(
             }
         }
 
-        let save_button = <HTMLButtonElement> document.getElementById('save_button')
-        save_button.onclick = async event => {
-            save_button.disabled = true
-            await save_options()
-            await send_background_message({action: 'sort_all_bookmarks'})
-            save_button.disabled = false
+        let saveButton = <HTMLButtonElement> document.getElementById('saveButton')
+        saveButton.onclick = async event => {
+            saveButton.disabled = true
+            await saveOptions()
+            await sendBackgroundMessage({action: 'sortAllBookmarks'})
+            saveButton.disabled = false
         }
     }
 )

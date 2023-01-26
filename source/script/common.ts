@@ -14,95 +14,95 @@ interface ComparatorComponent {
     ) : boolean
 }
 
-export function is_folder(node: BookmarkTreeNode) {
+export function isFolder(node: BookmarkTreeNode) {
     return node.url === undefined
 }
 
-export function get_page_comparator(options: Options): Comparator {
+export function getPageComparator(options: Options): Comparator {
 
-    let compare_criteria: ComparatorComponent
-    let compare_order: ComparatorComponent
+    let compareCriteria: ComparatorComponent
+    let compareOrder: ComparatorComponent
 
-    switch(options.page_sort_criteria) {
+    switch(options.pageSortCriteria) {
         case 'date':
-            compare_criteria = (self, other) => self.dateAdded < other.dateAdded
+            compareCriteria = (self, other) => self.dateAdded < other.dateAdded
             break
         case 'name':
-            compare_criteria = (self, other) => self.title.localeCompare(other.title) < 0
+            compareCriteria = (self, other) => self.title.localeCompare(other.title) < 0
             break
         case 'url':
-            compare_criteria = (self, other) => self.url.localeCompare(other.url) < 0
+            compareCriteria = (self, other) => self.url.localeCompare(other.url) < 0
             break
     }
 
-    if (options.page_sort_order === 'descending') {
-        compare_order = (self, other) => !compare_criteria(self, other)
+    if (options.pageSortOrder === 'descending') {
+        compareOrder = (self, other) => !compareCriteria(self, other)
     } else {
-        compare_order = compare_criteria
+        compareOrder = compareCriteria
     }
 
     return (self, other) => {
-        if(is_folder(other)) {
+        if(isFolder(other)) {
             return 1
         }
-        return compare_order(self, other) ? -1 : 1
+        return compareOrder(self, other) ? -1 : 1
     }
 }
 
-export function get_folder_comparator(options: Options): Comparator {
-    let compare_criteria: ComparatorComponent
-    let compare_order: ComparatorComponent
+export function getFolderComparator(options: Options): Comparator {
+    let compareCriteria: ComparatorComponent
+    let compareOrder: ComparatorComponent
 
-    switch(options.folder_sort_criteria) {
+    switch(options.folderSortCriteria) {
         case 'date':
-            compare_criteria = (self, other) => self.dateAdded < other.dateAdded
+            compareCriteria = (self, other) => self.dateAdded < other.dateAdded
             break
         case 'name':
-            compare_criteria = (self, other) => self.title.localeCompare(other.title) < 0
+            compareCriteria = (self, other) => self.title.localeCompare(other.title) < 0
             break
     }
 
-    if (options.folder_sort_order === 'descending') {
-        compare_order = (self, other) => !compare_criteria(self, other)
+    if (options.folderSortOrder === 'descending') {
+        compareOrder = (self, other) => !compareCriteria(self, other)
     } else {
-        compare_order = compare_criteria
+        compareOrder = compareCriteria
     }
 
     return (self, other) => {
-        if(is_folder(other)) {
-            return compare_order(self, other) ? -1 : 1
+        if(isFolder(other)) {
+            return compareOrder(self, other) ? -1 : 1
         }
         return -1
     }
 }
 
-export async function sort_bookmark(id) {
+export async function sortBookmark(id) {
     console.log('sorting ' + id)
-    let options = await load_options()
-    let bookmark = await get_bookmark(id)
-    let parent = await get_bookmark_tree(bookmark.parentId)
+    let options = await loadOptions()
+    let bookmark = await getBookmark(id)
+    let parent = await getBookmarkTree(bookmark.parentId)
             
-    // if(bookmark.parentId == "1" && !options.sort_bookmarks_bar) {
+    // if(bookmark.parentId == "1" && !options.sortBookmarksBar) {
     //     // don't sort items in bookmarks bar
     //     return
     // }
 
-    // if(bookmark.parentId == "2" && !options.sort_other_bookmarks) {
+    // if(bookmark.parentId == "2" && !options.sortOtherBookmarks) {
     //     // don't sort items in other bookmarks
     //     return
     // }
 
     let comparator: Comparator
 
-    if(is_folder(bookmark)) {
-        comparator = get_folder_comparator(options)
+    if(isFolder(bookmark)) {
+        comparator = getFolderComparator(options)
     } else {
-        comparator = get_page_comparator(options)
+        comparator = getPageComparator(options)
     }
 
     if(parent.children.length == 1) return
 
-    let new_index = parent.children.length
+    let newIndex = parent.children.length
 
     for(let other of parent.children) {
         if(other.id == bookmark.id) {
@@ -112,39 +112,39 @@ export async function sort_bookmark(id) {
         if(comparator(bookmark, other) < 1) {
             console.log(bookmark)
             console.log(other)
-            new_index = other.index
+            newIndex = other.index
             break
         }
     }
 
-    await move_bookmark(bookmark.id, new_index)
+    await moveBookmark(bookmark.id, newIndex)
 }
 
-async function get_bookmark(id: string): Promise<BookmarkTreeNode> {
+async function getBookmark(id: string): Promise<BookmarkTreeNode> {
     let results = await chrome.bookmarks.get(id)
     return results[0]
 }
 
-async function get_bookmark_tree(id: string): Promise<BookmarkTreeNode> {
+async function getBookmarkTree(id: string): Promise<BookmarkTreeNode> {
     let results = await chrome.bookmarks.getSubTree(id)
     return results[0]
 }
 
-async function move_bookmark(id: string, index: number): Promise<BookmarkTreeNode> {
+async function moveBookmark(id: string, index: number): Promise<BookmarkTreeNode> {
     return await chrome.bookmarks.move(
         id,
         {"index": index}
     )
 }
 
-export async function sort_bookmarks() {
-    let options = await load_options()
-    let page_comparator = get_page_comparator(options)
-    let folder_comparator = get_folder_comparator(options)
+export async function sortBookmarks() {
+    let options = await loadOptions()
+    let pageComparator = getPageComparator(options)
+    let folderComparator = getFolderComparator(options)
     
-    let other_bookmarks = await get_bookmark_tree("2")
+    let otherBookmarks = await getBookmarkTree("2")
 
-    let stack = [other_bookmarks]
+    let stack = [otherBookmarks]
 
     while(stack.length) {
         let folder = stack.pop()
@@ -154,10 +154,10 @@ export async function sort_bookmarks() {
 
         folder.children.sort(
             (a, b) => {
-                if(is_folder(a)) {
-                    return folder_comparator(a, b)
+                if(isFolder(a)) {
+                    return folderComparator(a, b)
                 } else {
-                    return page_comparator(a, b)
+                    return pageComparator(a, b)
                 }
             }
         )
@@ -170,11 +170,11 @@ export async function sort_bookmarks() {
             of folder.children.entries()
         ) {
             
-            if(is_folder(child)) {
+            if(isFolder(child)) {
                 stack.push(child)
             }
             
-            await move_bookmark(child.id, index)
+            await moveBookmark(child.id, index)
         }
         // console.log('done')
     }
@@ -182,16 +182,16 @@ export async function sort_bookmarks() {
 }
 
 export class Options {
-    folder_sort_order: 'ascending' | 'descending' = 'ascending'
-    folder_sort_criteria: 'date' | 'name'  = 'name'
-    page_sort_order: 'ascending' | 'descending' = 'descending'
-    page_sort_criteria: 'date' | 'name' | 'url' = 'date'
-    // mix_folders_and_pages: boolean = false
-    // sort_bookmarks_bar: boolean = false
-    // sort_other_bookmarks: boolean = true
+    folderSortOrder: 'ascending' | 'descending' = 'ascending'
+    folderSortCriteria: 'date' | 'name'  = 'name'
+    pageSortOrder: 'ascending' | 'descending' = 'descending'
+    pageSortCriteria: 'date' | 'name' | 'url' = 'date'
+    // mixFoldersAndPages: boolean = false
+    // sortBookmarksBar: boolean = false
+    // sortOtherBookmarks: boolean = true
 }
 
-export async function load_options(): Promise<Options> {
+export async function loadOptions(): Promise<Options> {
     let result = await chrome.storage.sync.get("options")
 
     if (result["options"]) {
@@ -205,7 +205,7 @@ export async function load_options(): Promise<Options> {
 
 export interface BackgroundMessages  {
     // [key: string]: (any) => Promise<any>
-    'sort_all_bookmarks': (message: Message) => Promise<void>
+    'sortAllBookmarks': (message: Message) => Promise<void>
 }
 
 export interface Message {
@@ -213,6 +213,6 @@ export interface Message {
     data?: any,
 }
 
-export async function send_background_message(message: Message) {
+export async function sendBackgroundMessage(message: Message) {
     return await chrome.runtime.sendMessage(message)
 }
