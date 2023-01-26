@@ -1,53 +1,25 @@
-import {folder_comparator, page_comparator} from "./common.js"
-
-async function sort_folder(
-    folder: chrome.bookmarks.BookmarkTreeNode,
-    stack: chrome.bookmarks.BookmarkTreeNode[]
-) {
-    folder.children.sort(
-        (a, b) => {
-            if(a.url === undefined) {
-                return folder_comparator(a, b)
-            } else {
-                return page_comparator(a, b)
-            }
-        }
-    )
-
-    for(
-        let [index, child] 
-        of folder.children.entries()
-    ) {
-        if(child.url === undefined) {
-            stack.push(child)
-        }
-        
-        chrome.bookmarks.move(
-            child.id,
-            {"index": index}
-        )
-    }
-}
-
-async function sort_bookmarks() {
-    chrome.bookmarks.getSubTree(
-        "2",
-        async stack => {
-            while(stack.length) {
-                let node = stack.pop()
-
-                if(node.url === undefined)
-                    await sort_folder(node, stack)
-            }
-        }
-    )
-}
+import {
+    send_background_message
+} from "./common.js"
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
-        let test_button = document.getElementById('sort_button')
-        test_button.onclick = sort_bookmarks
+        let sort_button = <HTMLButtonElement> document.getElementById('sort_button')
+        sort_button.onclick = async event => {
+            let old_text = sort_button.innerText
+            sort_button.disabled = true
+            sort_button.innerText = 'Sorting...'
+
+            await send_background_message({action: 'sort_all_bookmarks'})
+
+            sort_button.disabled = false
+            sort_button.innerText = old_text
+        }
     }
 )
 
+// chrome.runtime.onMessage.addListener(
+//     (message, sender, sendResponse) => {
+//     }
+// )
