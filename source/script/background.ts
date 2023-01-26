@@ -1,41 +1,48 @@
-import {folder_comparator, Comparator, page_comparator} from "./common.js"
+import {
+    sort_bookmark, 
+    sort_bookmarks, 
+    BackgroundMessages, 
+    Message
+} from "./common.js"
 
-chrome.bookmarks.onCreated.addListener(
-    (id, bookmark) => {
-        if(bookmark.parentId == "1") {
-            // don't sort items in bookmarks bar
-            return;
+function enable_callbacks() {
+    chrome.bookmarks.onCreated.addListener(sort_bookmark)
+    chrome.bookmarks.onChanged.addListener(sort_bookmark)
+    chrome.bookmarks.onMoved.addListener(sort_bookmark)
         }
 
-        let comparator: Comparator;
+function disable_callbacks() {
+    chrome.bookmarks.onCreated.removeListener(sort_bookmark)
+    chrome.bookmarks.onChanged.removeListener(sort_bookmark)
+    chrome.bookmarks.onMoved.removeListener(sort_bookmark)
+}
 
-        if(bookmark.url === undefined) {
-            comparator = page_comparator
-        } else {
-            comparator = folder_comparator
+let message_responses: BackgroundMessages = {
+    'sort_all_bookmarks': message => sort_bookmarks(),
         }
 
-        chrome.bookmarks.getChildren(
-            bookmark.parentId,
-            results => {
-                if(results.length == 1) return
-
-                for(let other of results) {
-                    if(comparator(bookmark, other) < 1) {
-                        chrome.bookmarks.move(
-                            bookmark.id,
-                            {'index': other.index}
-                        )
-
-                        return
+async function handle_message(message: Message) {
+    let callback = message_responses[message.action]
+    let result = null;
+    if(callback !== undefined) {
+        disable_callbacks()
+        result = await callback(message.data)
+        enable_callbacks()
                     }
+    return result
                 }
 
-                chrome.bookmarks.move(
-                    bookmark.id,
-                    {'index': results.length}
+chrome.runtime.onMessage.addListener(
+    (message: any, sender, sendResponse) => {
+        console.info('message received')
+        console.info(message)
+        handle_message(message).then(
+            response => sendResponse(response)
                 )
+        return true
             }
         )
     }
 )
+
+enable_callbacks()
