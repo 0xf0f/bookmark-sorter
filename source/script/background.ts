@@ -9,7 +9,7 @@ function enable_callbacks() {
     chrome.bookmarks.onCreated.addListener(sort_bookmark)
     chrome.bookmarks.onChanged.addListener(sort_bookmark)
     chrome.bookmarks.onMoved.addListener(sort_bookmark)
-        }
+}
 
 function disable_callbacks() {
     chrome.bookmarks.onCreated.removeListener(sort_bookmark)
@@ -19,7 +19,7 @@ function disable_callbacks() {
 
 let message_responses: BackgroundMessages = {
     'sort_all_bookmarks': message => sort_bookmarks(),
-        }
+}
 
 async function handle_message(message: Message) {
     let callback = message_responses[message.action]
@@ -28,9 +28,9 @@ async function handle_message(message: Message) {
         disable_callbacks()
         result = await callback(message.data)
         enable_callbacks()
-                    }
+    }
     return result
-                }
+}
 
 chrome.runtime.onMessage.addListener(
     (message: any, sender, sendResponse) => {
@@ -38,10 +38,18 @@ chrome.runtime.onMessage.addListener(
         console.info(message)
         handle_message(message).then(
             response => sendResponse(response)
-                )
-        return true
-            }
         )
+        return true
+    }
+)
+
+chrome.runtime.onInstalled.addListener(
+    details => {
+        if(details.reason == "install") {
+            // sort bookmarks for the first time
+            console.log('installed')
+            sort_bookmarks()
+        }
     }
 )
 
