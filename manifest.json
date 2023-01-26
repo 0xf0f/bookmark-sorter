@@ -4,12 +4,11 @@
   "description": "Sorts bookmarks on demand and as they're created.",
   
   "background": {
-    "page": "./source/html/background.html",
-      
-    "persistent": false
+    "service_worker": "./build/background.js",
+    "type": "module"
   },
 
-  "browser_action": {
+  "action": {
     "default_popup": "./source/html/options.html"
   },
 
@@ -23,5 +22,5 @@
     "declarativeContent"
   ],
 
-  "manifest_version": 2
+  "manifest_version": 3
 }
