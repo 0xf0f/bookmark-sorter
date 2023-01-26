@@ -76,7 +76,7 @@ export function getFolderComparator(options: Options): Comparator {
     }
 }
 
-export async function sortBookmark(id) {
+export async function sortBookmark(id: string) {
     console.log('sorting ' + id)
     let options = await loadOptions()
     let bookmark = await getBookmark(id)
