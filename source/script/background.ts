@@ -33,10 +33,11 @@ async function handleMessage(message: Message) {
 }
 
 chrome.runtime.onMessage.addListener(
-    async (message, sender, sendResponse) => {
+    (message, sender, sendResponse) => {
         console.info('message received')
         console.info(message)
-        return await handleMessage(message)
+        handleMessage(message).then(sendResponse)
+        return true
     }
 )
 
