@@ -33,22 +33,19 @@ async function handle_message(message: Message) {
 }
 
 chrome.runtime.onMessage.addListener(
-    (message: any, sender, sendResponse) => {
+    async (message, sender, sendResponse) => {
         console.info('message received')
         console.info(message)
-        handle_message(message).then(
-            response => sendResponse(response)
-        )
-        return true
+        return await handle_message(message)
     }
 )
 
 chrome.runtime.onInstalled.addListener(
-    details => {
+    async details => {
         if(details.reason == "install") {
             // sort bookmarks for the first time
             console.log('installed')
-            sort_bookmarks()
+            await sort_bookmarks()
         }
     }
 )
