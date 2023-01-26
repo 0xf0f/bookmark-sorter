@@ -19,6 +19,10 @@
   "permissions": [
     "bookmarks",
     "storage",
+
+    // the 'declarativeContent' permission is included as it is 
+    // required to alter DOM content, i.e. registering a callback 
+    // for a button click event in the popup.
     "declarativeContent"
   ],
 
