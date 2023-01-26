@@ -117,7 +117,7 @@ export async function sortBookmark(id: string) {
         }
     }
 
-    await moveBookmark(bookmark.id, newIndex)
+    return await moveBookmark(bookmark.id, newIndex)
 }
 
 async function getBookmark(id: string) {
