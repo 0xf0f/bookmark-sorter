@@ -19,6 +19,7 @@
   
   "permissions": [
     "bookmarks",
+    "storage",
     "declarativeContent"
   ],
 
