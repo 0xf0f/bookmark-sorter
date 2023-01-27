@@ -9,12 +9,16 @@ export class Options {
 }
 
 export async function loadOptions(): Promise<Options> {
-    let result = await chrome.storage.sync.get("options")
+    let savedOptions: Options = (await chrome.storage.sync.get("options"))["options"]
+    let result = new Options()
 
-    let defaultOptions = new Options()
-    let savedOptions = result["options"]
+    for(let key in savedOptions) {
+        if(key in result) {
+            result[key] = saveOptions[key]
+        }
+    }
 
-    return {...defaultOptions, ...savedOptions}
+    return result
 }
 
 
