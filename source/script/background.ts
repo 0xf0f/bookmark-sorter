@@ -1,9 +1,12 @@
 import {
     sortBookmark, 
-    sortAllBookmarks, 
+    sortAllBookmarks,
+} from './sorting.js'
+
+import {
     BackgroundMessages, 
-    Message
-} from "./common.js"
+    Message,
+} from './messaging.js'
 
 function enableCallbacks() {
     chrome.bookmarks.onCreated.addListener(sortBookmark)

@@ -1,3 +1,8 @@
+import {
+    Options,
+    loadOptions,
+} from './options.js'
+
 type BookmarkTreeNode = chrome.bookmarks.BookmarkTreeNode
 
 export interface Comparator {
@@ -14,11 +19,11 @@ interface ComparatorComponent {
     ) : boolean
 }
 
-export function isFolder(node: BookmarkTreeNode) {
+function isFolder(node: BookmarkTreeNode) {
     return node.url === undefined
 }
 
-export function getPageComparator(options: Options): Comparator {
+function getPageComparator(options: Options): Comparator {
 
     let compareCriteria: ComparatorComponent
     let compareOrder: ComparatorComponent
@@ -49,7 +54,7 @@ export function getPageComparator(options: Options): Comparator {
     }
 }
 
-export function getFolderComparator(options: Options): Comparator {
+function getFolderComparator(options: Options): Comparator {
     let compareCriteria: ComparatorComponent
     let compareOrder: ComparatorComponent
 
@@ -74,6 +79,23 @@ export function getFolderComparator(options: Options): Comparator {
         }
         return -1
     }
+}
+
+async function getBookmark(id: string) {
+    let results = await chrome.bookmarks.get(id)
+    return results[0]
+}
+
+async function getBookmarkTree(id: string) {
+    let results = await chrome.bookmarks.getSubTree(id)
+    return results[0]
+}
+
+async function moveBookmark(id: string, index: number) {
+    return await chrome.bookmarks.move(
+        id,
+        {"index": index}
+    )
 }
 
 export async function sortBookmark(id: string) {
@@ -120,23 +142,6 @@ export async function sortBookmark(id: string) {
     return await moveBookmark(bookmark.id, newIndex)
 }
 
-async function getBookmark(id: string) {
-    let results = await chrome.bookmarks.get(id)
-    return results[0]
-}
-
-async function getBookmarkTree(id: string) {
-    let results = await chrome.bookmarks.getSubTree(id)
-    return results[0]
-}
-
-async function moveBookmark(id: string, index: number) {
-    return await chrome.bookmarks.move(
-        id,
-        {"index": index}
-    )
-}
-
 export async function sortAllBookmarks() {
     let options = await loadOptions()
     let pageComparator = getPageComparator(options)
@@ -179,40 +184,4 @@ export async function sortAllBookmarks() {
         // console.log('done')
     }
 
-}
-
-export class Options {
-    folderSortOrder: 'ascending' | 'descending' = 'ascending'
-    folderSortCriteria: 'date' | 'name'  = 'name'
-    pageSortOrder: 'ascending' | 'descending' = 'descending'
-    pageSortCriteria: 'date' | 'name' | 'url' = 'date'
-    // mixFoldersAndPages: boolean = false
-    // sortBookmarksBar: boolean = false
-    // sortOtherBookmarks: boolean = true
-}
-
-export async function loadOptions(): Promise<Options> {
-    let result = await chrome.storage.sync.get("options")
-
-    if (result["options"]) {
-        return result["options"]
-    } else {
-        console.log("Options not found in storage, loading defaults.")
-        return new Options()
-    }
-}
-
-
-export interface BackgroundMessages  {
-    // [key: string]: (any) => Promise<any>
-    'sortAllBookmarks': (message: Message) => Promise<void>
-}
-
-export interface Message {
-    action: keyof BackgroundMessages,
-    data?: any,
-}
-
-export async function sendBackgroundMessage(message: Message) {
-    return await chrome.runtime.sendMessage(message)
 }

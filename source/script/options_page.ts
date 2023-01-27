@@ -1,10 +1,14 @@
 import {
-    loadOptions, 
-    sendBackgroundMessage, 
+    loadOptions,
+    saveOptions,
     Options 
-} from "./common.js"
+} from './options.js'
 
-async function saveOptions() {
+import {
+    sendBackgroundMessage,
+} from './messaging.js'
+
+function getOptionsInput() {
     let options = new Options()
     for (let key in options) {
         // console.log("key = " + key)
@@ -18,7 +22,7 @@ async function saveOptions() {
         // console.info(`${key} = ${element.value}`)
     }
 
-    return await chrome.storage.sync.set({"options": options})
+    return options
 }
 
 document.addEventListener(
@@ -38,7 +42,7 @@ document.addEventListener(
         let saveButton = <HTMLButtonElement> document.getElementById('saveButton')
         saveButton.onclick = async event => {
             saveButton.disabled = true
-            await saveOptions()
+            await saveOptions(getOptionsInput())
             await sendBackgroundMessage({action: 'sortAllBookmarks'})
             saveButton.disabled = false
         }
