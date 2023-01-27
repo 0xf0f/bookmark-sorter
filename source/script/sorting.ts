@@ -132,8 +132,8 @@ export async function sortBookmark(id: string) {
         }
 
         if(comparator(bookmark, other) < 1) {
-            console.log(bookmark)
-            console.log(other)
+            // console.log(bookmark)
+            // console.log(other)
             newIndex = other.index
             break
         }
