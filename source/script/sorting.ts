@@ -5,7 +5,7 @@ import {
 
 type BookmarkTreeNode = chrome.bookmarks.BookmarkTreeNode
 
-export interface Comparator {
+interface Comparator {
     (
         self: BookmarkTreeNode, 
         other: BookmarkTreeNode, 
