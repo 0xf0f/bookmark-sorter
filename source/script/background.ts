@@ -4,9 +4,12 @@ import {
 } from './sorting.js'
 
 import {
-    BackgroundMessages, 
-    Message,
+    MessageHandler,
 } from './messaging.js'
+
+import {
+    sortAllBookmarksAction
+} from './actions.js'
 
 function enableCallbacks() {
     chrome.bookmarks.onCreated.addListener(sortBookmark)
@@ -20,29 +23,15 @@ function disableCallbacks() {
     chrome.bookmarks.onMoved.removeListener(sortBookmark)
 }
 
-let messageResponses: BackgroundMessages = {
-    'sortAllBookmarks': message => sortAllBookmarks(),
-}
-
-async function handleMessage(message: Message) {
-    let callback = messageResponses[message.action]
-    let result = null;
-    if(callback !== undefined) {
+const messageHandler = new MessageHandler()
+messageHandler.registerCallback(
+    sortAllBookmarksAction, async () => {
         disableCallbacks()
-        result = await callback(message.data)
+        await sortAllBookmarks()
         enableCallbacks()
     }
-    return result
-}
-
-chrome.runtime.onMessage.addListener(
-    (message, sender, sendResponse) => {
-        console.info('message received')
-        console.info(message)
-        handleMessage(message).then(sendResponse)
-        return true
-    }
 )
+messageHandler.listen()
 
 chrome.runtime.onInstalled.addListener(
     async details => {

@@ -5,8 +5,12 @@ import {
 } from './options.js'
 
 import {
-    sendBackgroundMessage,
+    sendMessage,
 } from './messaging.js'
+
+import {
+    sortAllBookmarksAction
+} from './actions.js'
 
 function getOptionsInput() {
     let options = new Options()
@@ -43,7 +47,7 @@ document.addEventListener(
         saveButton.onclick = async event => {
             saveButton.disabled = true
             await saveOptions(getOptionsInput())
-            await sendBackgroundMessage({action: 'sortAllBookmarks'})
+            await sendMessage(sortAllBookmarksAction, null)
             saveButton.disabled = false
         }
     }
