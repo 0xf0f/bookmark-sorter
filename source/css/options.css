@@ -26,6 +26,6 @@
     }
     
     button:enabled:hover {
-        filter: brightness(.85);
+        filter: brightness(1.15);
     }
 }
