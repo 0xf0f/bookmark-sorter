@@ -11,12 +11,10 @@ export class Options {
 export async function loadOptions(): Promise<Options> {
     let result = await chrome.storage.sync.get("options")
 
-    if (result["options"]) {
-        return result["options"]
-    } else {
-        console.log("Options not found in storage, loading defaults.")
-        return new Options()
-    }
+    let defaultOptions = new Options()
+    let savedOptions = result["options"]
+
+    return {...defaultOptions, ...savedOptions}
 }
 
 
