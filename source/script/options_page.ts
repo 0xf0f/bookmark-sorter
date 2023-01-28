@@ -1,6 +1,5 @@
 import {
     loadOptions,
-    saveOptions,
     Options 
 } from './options.js'
 

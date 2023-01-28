@@ -9,9 +9,13 @@ import {
 
 import {
     saveOptionsAction,
-    sortAllBookmarksAction, sortBookmarkAction
+    sortBookmarkAction,
+    sortAllBookmarksAction, 
 } from './actions.js'
-import { saveOptions } from './options.js'
+
+import { 
+    saveOptions 
+} from './options.js'
 
 const messageHandler = new MessageHandler()
 
@@ -38,6 +42,7 @@ messageHandler.registerCallback(
         enableCallbacks()
     }
 )
+
 messageHandler.registerCallback(
     sortBookmarkAction, async data => {
         disableCallbacks()
@@ -54,6 +59,7 @@ messageHandler.registerCallback(
         enableCallbacks()
     }
 )
+
 messageHandler.listen()
 
 chrome.runtime.onInstalled.addListener(
@@ -61,7 +67,7 @@ chrome.runtime.onInstalled.addListener(
         if(details.reason == "install") {
             // sort bookmarks for the first time
             console.log('installed')
-            await sortAllBookmarks()
+            await messageHandler.queueAction(sortAllBookmarksAction)
         }
     }
 )

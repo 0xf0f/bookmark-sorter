@@ -18,16 +18,8 @@ export class MessageHandler {
     private processing: boolean = false
 
     private queueMessageQueueItem(item: MessageQueueItem) {
-        console.log('queueing item')
-        console.log(item)
         this.messageQueue.push(item)
         this.processMessages()
-
-        // if(!this.loopPromise) {
-        //     console.log('starting loop')
-        //     this.loopPromise = this.loop()
-        //     this.loopPromise.then(()=>{this.loopPromise=undefined})
-        // }
     }
 
     private getCallback(message: Message) {
@@ -82,12 +74,9 @@ export class MessageHandler {
             return
         }
         this.processing = true
-        console.log('start of processing')
         while(true) {
             let item = this.messageQueue.shift()
             if(item) {
-                console.log('got item')
-                console.log(item)
                 let callback = this.getCallback(item.message)
                 let result = undefined
                 if(callback) {
@@ -99,33 +88,8 @@ export class MessageHandler {
                 break
             }
         }
-        console.log('end of processing')
         this.processing = false
     }
-
-    // async loop(timeout=5000) {
-    //     while(true){
-    //         let item: MessageQueueItem
-    //         try {
-    //             item = await this.messageQueue.pop(timeout)
-    //         } catch(error) {
-    //             if(error instanceof TimeoutError) {
-    //                 console.log('timed out')
-    //                 return
-    //             } else {
-    //                 throw error
-    //             }
-    //         }
-    //         console.log('got item')
-    //         console.log(item)
-    //         let callback = this.getCallback(item.message)
-    //         let response = undefined
-    //         if(callback) {
-    //             response = await callback(item.message.data)
-    //         }
-    //         item.sendResponse(response)
-    //     }
-    // }
 }
 
 export async function sendMessage<InputType, OutputType>(
