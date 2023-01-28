@@ -14,7 +14,7 @@ export async function loadOptions(): Promise<Options> {
 
     for(let key in savedOptions) {
         if(key in result) {
-            result[key] = saveOptions[key]
+            result[key] = savedOptions[key]
         }
     }
 
