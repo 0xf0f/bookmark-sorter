@@ -1,3 +1,5 @@
+
+export class TimeoutError {}
 export class BlockingQueue<T> {
     private listeners: ((item: T)=>any)[] = []
     private queue: T[] = []
@@ -10,7 +12,7 @@ export class BlockingQueue<T> {
         }
     }
 
-    async pop(): Promise<T> {
+    async pop(timeout?: number): Promise<T> {
         if(this.queue.length) {
             return this.queue.shift()
         }
@@ -18,6 +20,12 @@ export class BlockingQueue<T> {
         return new Promise<T>(
             (resolve, reject) => {
                 this.listeners.push(resolve)
+                if(timeout) {
+                    setTimeout(() => {
+                        this.listeners.splice(this.listeners.indexOf(resolve), 1)
+                        reject(new TimeoutError())
+                    }, timeout)
+                }
             }
         )
     }
