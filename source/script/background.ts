@@ -8,22 +8,33 @@ import {
 } from './messaging.js'
 
 import {
-    sortAllBookmarksAction
+    saveOptionsAction,
+    sortBookmarkAction,
+    sortAllBookmarksAction, 
 } from './actions.js'
 
+import { 
+    saveOptions 
+} from './options.js'
+
+const messageHandler = new MessageHandler()
+
+function sortBookmarkCallback(id: string) {
+    return messageHandler.queueAction(sortBookmarkAction, {id: id})
+}
+
 function enableCallbacks() {
-    chrome.bookmarks.onCreated.addListener(sortBookmark)
-    chrome.bookmarks.onChanged.addListener(sortBookmark)
-    chrome.bookmarks.onMoved.addListener(sortBookmark)
+    chrome.bookmarks.onCreated.addListener(sortBookmarkCallback)
+    chrome.bookmarks.onChanged.addListener(sortBookmarkCallback)
+    chrome.bookmarks.onMoved.addListener(sortBookmarkCallback)
 }
 
 function disableCallbacks() {
-    chrome.bookmarks.onCreated.removeListener(sortBookmark)
-    chrome.bookmarks.onChanged.removeListener(sortBookmark)
-    chrome.bookmarks.onMoved.removeListener(sortBookmark)
+    chrome.bookmarks.onCreated.removeListener(sortBookmarkCallback)
+    chrome.bookmarks.onChanged.removeListener(sortBookmarkCallback)
+    chrome.bookmarks.onMoved.removeListener(sortBookmarkCallback)
 }
 
-const messageHandler = new MessageHandler()
 messageHandler.registerCallback(
     sortAllBookmarksAction, async () => {
         disableCallbacks()
@@ -31,6 +42,24 @@ messageHandler.registerCallback(
         enableCallbacks()
     }
 )
+
+messageHandler.registerCallback(
+    sortBookmarkAction, async data => {
+        disableCallbacks()
+        let result = await sortBookmark(data.id)
+        enableCallbacks()
+        return result
+    }
+)
+
+messageHandler.registerCallback(
+    saveOptionsAction, async data => {
+        disableCallbacks()
+        saveOptions(data.options)
+        enableCallbacks()
+    }
+)
+
 messageHandler.listen()
 
 chrome.runtime.onInstalled.addListener(
@@ -38,7 +67,7 @@ chrome.runtime.onInstalled.addListener(
         if(details.reason == "install") {
             // sort bookmarks for the first time
             console.log('installed')
-            await sortAllBookmarks()
+            await messageHandler.queueAction(sortAllBookmarksAction)
         }
     }
 )

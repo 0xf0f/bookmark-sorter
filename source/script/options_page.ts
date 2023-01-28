@@ -1,6 +1,5 @@
 import {
     loadOptions,
-    saveOptions,
     Options 
 } from './options.js'
 
@@ -9,6 +8,7 @@ import {
 } from './messaging.js'
 
 import {
+    saveOptionsAction,
     sortAllBookmarksAction
 } from './actions.js'
 
@@ -46,8 +46,8 @@ document.addEventListener(
         let saveButton = <HTMLButtonElement> document.getElementById('saveButton')
         saveButton.onclick = async event => {
             saveButton.disabled = true
-            await saveOptions(getOptionsInput())
-            await sendMessage(sortAllBookmarksAction, null)
+            await sendMessage(saveOptionsAction, {options: getOptionsInput()})
+            await sendMessage(sortAllBookmarksAction, null) 
             saveButton.disabled = false
         }
     }
