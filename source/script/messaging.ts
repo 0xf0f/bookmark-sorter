@@ -1,13 +1,27 @@
-import {Action} from './actions.js'
+import { Action } from './actions.js'
+import { BlockingQueue } from './blocking_queue.js'
 interface Message {
     actionName: string
     data?: any
 }
 
+
+type MessageQueueItem = {
+    message: Message,
+    sendResponse: (response?: any)=>void
+}
 export class MessageHandler {
     private callbacks: {
         [actionName: string]: (data: any) => Promise<any>
     } = {}
+
+    private messageQueue = new BlockingQueue<MessageQueueItem>()
+
+    private queueMessageQueueItem(item: MessageQueueItem) {
+        console.log('queueing item')
+        console.log(item)
+        this.messageQueue.push(item)
+    }
 
     private getCallback(message: Message) {
         return this.callbacks[message.actionName]
@@ -22,17 +36,34 @@ export class MessageHandler {
     }
 
     listen() {
+        console.log('listening')
         chrome.runtime.onMessage.addListener(
             (message: Message, sender, sendResponse) => {
-                let callback = this.getCallback(message)
-                if(callback) {
-                    callback(message.data).then(sendResponse)
-                    return true
-                } else {
-                    sendResponse()
-                }
+                this.queueMessageQueueItem(
+                    {
+                        message: message,
+                        sendResponse: sendResponse,
+                    }
+                )
+                return true
             }
         )
+
+        return this.loop()
+    }
+
+    async loop() {
+        while(true){
+            let item = await this.messageQueue.pop()
+            console.log('got item')
+            console.log(item)
+            let callback = this.getCallback(item.message)
+            let response = undefined
+            if(callback) {
+                response = await callback(item.message.data)
+            }
+            item.sendResponse(response)
+        }
     }
 }
 
