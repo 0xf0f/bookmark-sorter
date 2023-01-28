@@ -9,5 +9,13 @@
     "rootDir": "./source/script/"
   },
 
+  "exclude": [
+    ".git",
+    ".old",
+    "build",
+    "node_modules",
+    "dist"
+  ],
+
   "compileOnSave": true,
 }
