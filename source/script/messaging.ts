@@ -74,19 +74,14 @@ export class MessageHandler {
             return
         }
         this.processing = true
-        while(true) {
+        while(this.messageQueue.length) {
             let item = this.messageQueue.shift()
-            if(item) {
-                let callback = this.getCallback(item.message)
-                let result = undefined
-                if(callback) {
-                    result = await callback(item.message.data)
-                }
-                item.sendResponse(result)
-
-            } else {
-                break
+            let callback = this.getCallback(item.message)
+            let result = undefined
+            if(callback) {
+                result = await callback(item.message.data)
             }
+            item.sendResponse(result)
         }
         this.processing = false
     }
