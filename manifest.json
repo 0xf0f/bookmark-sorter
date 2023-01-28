@@ -1,15 +1,18 @@
 {
+  "manifest_version": 3,
+
   "name": "Bookmark Sorter",
   "version": "2.0",
-  "description": "a chrome extension that keeps bookmarks sorted",
-  
-  "background": {
-    "service_worker": "./build/background.js",
-    "type": "module"
-  },
+  "description": "A chrome extension that keeps bookmarks sorted.",
+  "author": "0xf0f.dev@gmail.com",
 
   "action": {
     "default_popup": "./source/html/options.html"
+  },
+
+  "background": {
+    "service_worker": "./build/background.js",
+    "type": "module"
   },
 
   "options_ui": {
@@ -18,13 +21,6 @@
   
   "permissions": [
     "bookmarks",
-    "storage",
-
-    // the 'declarativeContent' permission is included as it is 
-    // required to alter DOM content, i.e. registering a callback 
-    // for a button click event in the popup.
-    "declarativeContent"
-  ],
-
-  "manifest_version": 3
+    "storage"
+  ]
 }
