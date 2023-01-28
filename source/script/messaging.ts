@@ -58,6 +58,26 @@ export class MessageHandler {
         )
     }
 
+    queueAction<InputType, OutputType>(
+        action: Action<InputType, OutputType>,
+        data?: InputType
+    ): Promise<OutputType> {
+        return new Promise(
+            (resolve, reject) => {
+                this.queueMessageQueueItem(
+                    {
+                        message: {
+                            actionName: action.name,
+                            data: data
+                        },
+        
+                        sendResponse: resolve,
+                    }
+                )
+            }
+        )
+    }
+
     async loop(timeout=5000) {
         while(true){
             let item: MessageQueueItem

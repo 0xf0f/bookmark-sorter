@@ -22,8 +22,10 @@ export class BlockingQueue<T> {
                 this.listeners.push(resolve)
                 if(timeout) {
                     setTimeout(() => {
-                        this.listeners.splice(this.listeners.indexOf(resolve), 1)
-                        reject(new TimeoutError())
+                        if(this.queue.length < this.listeners.length) {
+                            this.listeners.splice(this.listeners.indexOf(resolve), 1)
+                            reject(new TimeoutError())
+                        }
                     }, timeout)
                 }
             }
