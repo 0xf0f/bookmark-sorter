@@ -48,7 +48,7 @@ document.addEventListener(
         saveButton.onclick = async event => {
             saveButton.disabled = true
             await sendMessage(saveOptionsAction, {options: getOptionsInput()})
-            await sendMessage(sortAllBookmarksAction, null)
+            await sendMessage(sortAllBookmarksAction, null) 
             saveButton.disabled = false
         }
     }

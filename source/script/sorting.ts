@@ -184,4 +184,14 @@ export async function sortAllBookmarks() {
         // console.log('done')
     }
 
+    // await new Promise<void> (
+    //     (resolve, reject) => {
+    //         // console.log('gonna resolve')
+    //         setTimeout(
+    //             resolve,
+    //             10000
+    //         )
+    //     }
+    // )
+
 }
