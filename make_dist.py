@@ -1,9 +1,12 @@
+# Creates zip and crx files for release in the dist/ folder.
+# Requires npx and chrome to be in PATH.
+
 import json
 import pathlib
 import shutil
 import subprocess
 
-cd = pathlib.Path(__file__).parent.absolute()
+cd = pathlib.Path(__file__).absolute().parent
 manifest_json = cd / 'manifest.json'
 
 source_folder = cd / 'source'
