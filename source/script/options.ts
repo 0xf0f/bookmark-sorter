@@ -4,8 +4,8 @@ export class Options {
     pageSortOrder: 'ascending' | 'descending' = 'descending'
     pageSortCriteria: 'date' | 'name' | 'url' = 'date'
     // mixFoldersAndPages: boolean = false
-    // sortBookmarksBar: boolean = false
-    // sortOtherBookmarks: boolean = true
+    sortBookmarksBar: boolean = false
+    sortOtherBookmarks: boolean = false
 }
 
 export async function loadOptions(): Promise<Options> {

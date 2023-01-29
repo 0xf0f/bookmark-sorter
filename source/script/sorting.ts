@@ -104,15 +104,15 @@ export async function sortBookmark(id: string) {
     let bookmark = await getBookmark(id)
     let parent = await getBookmarkTree(bookmark.parentId)
             
-    // if(bookmark.parentId == "1" && !options.sortBookmarksBar) {
-    //     // don't sort items in bookmarks bar
-    //     return
-    // }
+    if(bookmark.parentId == "1" && !options.sortBookmarksBar) {
+        // don't sort items in bookmarks bar
+        return
+    }
 
-    // if(bookmark.parentId == "2" && !options.sortOtherBookmarks) {
-    //     // don't sort items in other bookmarks
-    //     return
-    // }
+    if(bookmark.parentId == "2" && !options.sortOtherBookmarks) {
+        // don't sort items in other bookmarks
+        return
+    }
 
     let comparator: Comparator
 
@@ -147,9 +147,15 @@ export async function sortAllBookmarks() {
     let pageComparator = getPageComparator(options)
     let folderComparator = getFolderComparator(options)
     
-    let otherBookmarks = await getBookmarkTree("2")
+    
+    let stack = []
+    if(options.sortBookmarksBar) {
+        stack.push(await getBookmarkTree('1'))
+    }
 
-    let stack = [otherBookmarks]
+    if(options.sortOtherBookmarks) {
+        stack.push(await getBookmarkTree('2'))
+    }
 
     while(stack.length) {
         let folder = stack.pop()
