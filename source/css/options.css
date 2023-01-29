@@ -1,37 +1,94 @@
 @media (prefers-color-scheme: dark) {
     :root {
-        --main-bg-color: #292929;
-        --card-bg-color: #3a3a38;
-        --main-light-onColor: #aeb4bd;
-        --main-dark-onColor: #777676;
+        --bg-color-dark: #292929;
+        --bg-color-light: #3a3a38;
+        --fg-color-dark: #656565;
+        --fg-color-light: #b8b8b8;
     }
 }
 
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-color-dark: #ffffff;
+        --bg-color-light: #ffffff;
+        --fg-color-dark: #000000;
+        --fg-color-light: #2f2f2f;
+    }
+}
+
+/* @media (prefers-color-scheme: dark) {
+    :root {
+    }
+} */
+
 body {
-    background-color: var(--main-bg-color);
-    color: var(--main-light-onColor);
+    background-color: var(--bg-color-dark);
+    color: var(--fg-color-light);
+    /* padding: 8px; */
+    min-width: 512px;
+    /* font-size: medium; */
+    zoom: 110%;
+    /* padding-top: 16px; */
+    /* padding-bottom: 16px; */
 }
 
-select, button {
-    background-color: var(--card-bg-color);
-    color: var(--main-light-onColor);
-}
-
-button:enabled {
-    border: 1px solid var(--main-light-onColor);
+select, button, input[type='text'], input[type='checkbox'] {
+    background-color: var(--bg-color-light);
+    border: 1px solid var(--fg-color-dark);
+    color: var(--fg-color-light);
 }
 
 button:disabled {
-    color: var(--main-dark-onColor);
-    border: 1px solid var(--main-dark-onColor);
+    filter: brightness(.85);
 }
 
 button:enabled:hover {
     filter: brightness(1.15);
 }
 
-input[type='text'] {
-    background-color: var(--card-bg-color);
-    border: 1px solid var(--main-dark-onColor);
-    color: var(--main-light-onColor);
+.section {
+    position: relative;
+    border: 1px solid var(--card-bg-color);
+    border-radius: 2px;
+    padding: 16px;
+    padding-top: 20px;
+}
+
+.section > .section-title {
+    background-color: var(--main-bg-color);
+    position: absolute;
+    top: 0%;
+    /* left: 50%; */
+    transform: translateY(-50%);
+    left: 4px;
+    font-size: medium;
+    border: 1px solid var(--main-bg-color);
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+fieldset {
+    border: 1px solid var(--fg-color-dark);
+    border-radius: 2px;
+    /* padding: 16px; */
+    padding-bottom: 16px;
+}
+
+fieldset > legend {
+    /* background-color: transparent; */
+    /* position: absolute;
+    top: 0%; */
+    /* left: 50%; */
+    /* transform: translateY(-50%); */
+    /* left: 4px; */
+    font-size: large;
+    /* border: 1px solid var(--fg-color-1); */
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+label {
+    /* font-size: medium; */
 }
