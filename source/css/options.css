@@ -32,4 +32,10 @@ body {
     button:enabled:hover {
         filter: brightness(1.15);
     }
+
+    input[type='text'] {
+        background-color: var(--card-bg-color);
+        border: 1px solid var(--main-dark-onColor);
+        color: var(--main-light-onColor);
+    }
 }
