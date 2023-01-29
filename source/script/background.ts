@@ -10,12 +10,19 @@ import {
 import {
     saveOptionsAction,
     sortBookmarkAction,
-    sortAllBookmarksAction, 
+    sortAllBookmarksAction,
+    getBookmarksOrderAction,
+    applyBookmarksOrderAction, 
 } from './actions.js'
 
 import { 
     saveOptions 
 } from './options.js'
+
+import {
+    getBookmarksOrder,
+    applyBookmarksOrder,
+} from './order.js'
 
 const messageHandler = new MessageHandler()
 
@@ -56,6 +63,23 @@ messageHandler.registerCallback(
     saveOptionsAction, async data => {
         disableCallbacks()
         saveOptions(data.options)
+        enableCallbacks()
+    }
+)
+
+messageHandler.registerCallback(
+    getBookmarksOrderAction, async data => {
+        disableCallbacks()
+        let result = await getBookmarksOrder()
+        enableCallbacks()
+        return result
+    }
+)
+
+messageHandler.registerCallback(
+    applyBookmarksOrderAction, async data => {
+        disableCallbacks()
+        await applyBookmarksOrder(data.order)
         enableCallbacks()
     }
 )

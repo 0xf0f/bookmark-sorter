@@ -9,7 +9,9 @@ import {
 
 import {
     saveOptionsAction,
-    sortAllBookmarksAction
+    sortAllBookmarksAction,
+    getBookmarksOrderAction,
+    applyBookmarksOrderAction,
 } from './actions.js'
 
 function getOptionsInput() {
@@ -43,12 +45,56 @@ document.addEventListener(
             }
         }
 
-        let saveButton = <HTMLButtonElement> document.getElementById('saveButton')
+        let saveButton = (
+            <HTMLButtonElement> document.getElementById('saveButton')
+        )
         saveButton.onclick = async event => {
             saveButton.disabled = true
             await sendMessage(saveOptionsAction, {options: getOptionsInput()})
             await sendMessage(sortAllBookmarksAction, null) 
             saveButton.disabled = false
+        }
+        
+        let orderInput = (
+            <HTMLInputElement> document.getElementById('orderInput')
+        )
+
+        let getOrderButton = (
+            <HTMLButtonElement> document.getElementById('getOrderButton')
+        )
+
+        let applyOrderButton = (
+            <HTMLButtonElement> document.getElementById('applyOrderButton')
+        )
+
+        getOrderButton.onclick = async event => {
+            getOrderButton.disabled = true
+            try {
+                orderInput.value = JSON.stringify(
+                    await sendMessage(
+                        getBookmarksOrderAction, null
+                    )
+                )
+            } catch(error) {
+                throw error
+            } finally {
+                getOrderButton.disabled = false
+            }
+        }
+
+        applyOrderButton.onclick = async event => {
+            applyOrderButton.disabled = true
+
+            try {
+                await sendMessage(
+                    applyBookmarksOrderAction, 
+                    {order: JSON.parse(orderInput.value)}
+                )
+            } catch(error) {
+                throw error
+            } finally {
+                applyOrderButton.disabled = false
+            }
         }
     }
 )
