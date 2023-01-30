@@ -3,7 +3,7 @@
 
   "name": "Bookmark Sorter",
   "version": "2.0",
-  "description": "A chrome extension that keeps bookmarks sorted.",
+  "description": "Keeps bookmarks sorted",
   "author": "0xf0f.dev@gmail.com",
 
   "action": {
