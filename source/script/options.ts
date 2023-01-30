@@ -9,20 +9,25 @@ export class Options {
     automaticSorting: boolean = false
 }
 
-export async function loadOptions(): Promise<Options> {
-    let savedOptions: Options = (await chrome.storage.sync.get("options"))["options"]
-    let result = new Options()
+var cachedOptions: Options
 
-    for(let key in savedOptions) {
-        if(key in result) {
-            result[key] = savedOptions[key]
+export async function loadOptions(): Promise<Options> {
+    if(!cachedOptions) {
+        let savedOptions = (await chrome.storage.sync.get("options"))["options"]
+        cachedOptions = new Options()
+
+        for(let key in savedOptions) {
+            if(key in cachedOptions) {
+                cachedOptions[key] = savedOptions[key]
+            }
         }
     }
 
-    return result
+    return cachedOptions
 }
 
 
 export async function saveOptions(options: Options) {
+    cachedOptions = options
     return await chrome.storage.sync.set({'options': options})
 }
