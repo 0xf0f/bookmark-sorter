@@ -98,19 +98,39 @@ async function moveBookmark(id: string, index: number) {
     )
 }
 
+async function hasAncestorWithIds(node: BookmarkTreeNode, idList: string[]) {
+    let parentId = node.parentId
+    while(parentId) {
+        if(idList.includes(parentId)) {
+            return true
+        }
+        let parent = await getBookmark(parentId)
+        parentId = parent.parentId
+    }
+    return false
+}
+
 export async function sortBookmark(id: string) {
-    console.log('sorting ' + id)
     let options = await loadOptions()
     let bookmark = await getBookmark(id)
-    let parent = await getBookmarkTree(bookmark.parentId)
-            
-    if(bookmark.parentId == "1" && !options.sortBookmarksBar) {
-        // don't sort items in bookmarks bar
-        return
+    // console.log('sorting', id, 'parentId=', bookmark.parentId)
+    
+    let disallowedAncestorIds: string[] = []
+
+    if(!options.sortBookmarksBar) {
+        disallowedAncestorIds.push('1')
     }
 
-    if(bookmark.parentId == "2" && !options.sortOtherBookmarks) {
-        // don't sort items in other bookmarks
+    if(!options.sortOtherBookmarks) {
+        disallowedAncestorIds.push('2')
+    }
+
+    let parent = await getBookmarkTree(bookmark.parentId)
+
+    if(
+        disallowedAncestorIds.includes(parent.id) ||
+        hasAncestorWithIds(parent, disallowedAncestorIds)
+    ) {
         return
     }
 
