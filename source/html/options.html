@@ -40,8 +40,6 @@
             <option value="descending">Descending</option>
         </select>
         <br><br>
-        <!-- <input type="checkbox" id="mixFoldersAndPages">Mix Folders and Pages (ignore folder sort criteria/order)
-        <br> -->
         <input type="checkbox" id="sortBookmarksBar">
         <label for="sortBookmarksBar">Sort Bookmarks Bar</label>
         <br>
@@ -50,27 +48,21 @@
         <br><br>
         <button id="saveButton">Save</button>
     </fieldset>
-    <!-- <br><br> -->
-    <!-- <hr><br> -->
-    <!-- <div style="display: grid"> -->
-    <!-- <br> -->
-    <fieldset>
-        <legend>Save/Restore Arrangement</legend>
-        Use 'Get' to receive text representing
-        the current arrangement of bookmarks.
-        <br><br>
-        Use 'Apply'
-        to rearrange bookmarks based on such text.
-        <br><br>
-        <label for="orderInput">
-        </label><br>
-        <input type="text" id="orderInput">
-        <!-- <br> -->
-        <button id="getOrderButton">Get</button>
-        <!-- <br> -->
-        <button id="applyOrderButton">Apply</button>
+    <fieldset class="toggleableFieldSet">
+        <input type="checkbox" class="fieldSetToggler" id="toggle" hidden>
+        <legend><label for="toggle">Save/Restore Arrangement</label></legend>
+        <div class="content">
+            Use 'Get' to receive text representing the current arrangement of bookmarks.
+            You can copy and save this, then later on paste it back
+            here and hit 'Apply' to restore the same bookmark arrangement.
+            <br>
+            <label for="orderInput">
+            </label><br>
+            <input type="text" id="orderInput">
+            <button id="getOrderButton">Get</button>
+            <button id="applyOrderButton">Apply</button>
+        </div>
+        <div class="clickToExpandText"></div>
     </fieldset>
-    <!-- </div> -->
-
 </body>
 </html>

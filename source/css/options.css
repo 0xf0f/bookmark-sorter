@@ -16,20 +16,11 @@
     }
 }
 
-/* @media (prefers-color-scheme: dark) {
-    :root {
-    }
-} */
-
 body {
     background-color: var(--bg-color-dark);
     color: var(--fg-color-light);
-    /* padding: 8px; */
-    min-width: 512px;
-    /* font-size: medium; */
+    min-width: 300px;
     zoom: 110%;
-    /* padding-top: 16px; */
-    /* padding-bottom: 16px; */
 }
 
 select, button, input[type='text'], input[type='checkbox'] {
@@ -46,49 +37,55 @@ button:enabled:hover {
     filter: brightness(1.15);
 }
 
-.section {
-    position: relative;
-    border: 1px solid var(--card-bg-color);
-    border-radius: 2px;
-    padding: 16px;
-    padding-top: 20px;
-}
-
-.section > .section-title {
-    background-color: var(--main-bg-color);
-    position: absolute;
-    top: 0%;
-    /* left: 50%; */
-    transform: translateY(-50%);
-    left: 4px;
-    font-size: medium;
-    border: 1px solid var(--main-bg-color);
-    padding: 8px;
-    box-sizing: border-box;
-    border-radius: 2px;
-}
-
 fieldset {
     border: 1px solid var(--fg-color-dark);
     border-radius: 2px;
-    /* padding: 16px; */
     padding-bottom: 16px;
 }
 
 fieldset > legend {
-    /* background-color: transparent; */
-    /* position: absolute;
-    top: 0%; */
-    /* left: 50%; */
-    /* transform: translateY(-50%); */
-    /* left: 4px; */
     font-size: large;
-    /* border: 1px solid var(--fg-color-1); */
     padding: 8px;
     box-sizing: border-box;
     border-radius: 2px;
 }
 
-label {
-    /* font-size: medium; */
+/* fieldset > legend {
+    cursor: pointer;
+} */
+
+/* .toggleableFieldSet .fieldSetToggler + legend {
+    cursor: pointer;
+    display: inline-block;
 }
+
+.toggleableFieldSet .fieldSetToggler:not(:checked) + legend > label::before {
+    content: " [+] ";
+}
+
+.toggleableFieldSet .fieldSetToggler:checked + legend > label::before {
+    content: " [-] ";
+}
+
+.toggleableFieldSet .fieldSetToggler:not(:checked) ~ .content  {
+    display: none;
+} */
+
+/* .toggleableFieldSet:has(.fieldSetToggler:not(:checked)) .content {
+    height: 0;
+
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1s ease;
+}
+
+.toggleableFieldSet:has(.fieldSetToggler:checked) .content {
+    transform: scaleY(1);
+    transform-origin: top;
+    transition: transform 1s ease;
+} */
+
+
+/* .toggleableFieldSet .fieldSetToggler:checked ~ .content {
+    display: unset;
+} */
