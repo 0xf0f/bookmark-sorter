@@ -55,7 +55,7 @@ export class MessageHandler {
 
     queueAction<InputType, OutputType>(
         action: Action<InputType, OutputType>,
-        data?: InputType
+        data: InputType
     ): Promise<OutputType> {
         return new Promise(
             (resolve, reject) => {
