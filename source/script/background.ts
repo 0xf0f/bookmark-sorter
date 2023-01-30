@@ -48,7 +48,7 @@ messageHandler.postprocessingCallback = enableAutoSortCallbacks
 
 messageHandler.registerCallback(
     sortAllBookmarksAction, 
-    sortAllBookmarks
+    async data => sortAllBookmarks(data.options)
 )
 
 messageHandler.registerCallback(
@@ -83,7 +83,9 @@ chrome.runtime.onInstalled.addListener(
         if(details.reason == "install") {
             // sort bookmarks for the first time
             console.log('installed')
-            await messageHandler.queueAction(sortAllBookmarksAction)
+            await messageHandler.queueAction(
+                sortAllBookmarksAction, {options: undefined}
+            )
         }
     }
 )

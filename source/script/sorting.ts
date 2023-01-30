@@ -162,8 +162,10 @@ export async function sortBookmark(id: string) {
     return await moveBookmark(bookmark.id, newIndex)
 }
 
-export async function sortAllBookmarks() {
-    let options = await loadOptions()
+export async function sortAllBookmarks(options?: Options) {
+    if(!options) {
+        options = await loadOptions()
+    }
     let pageComparator = getPageComparator(options)
     let folderComparator = getFolderComparator(options)
     

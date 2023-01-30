@@ -12,7 +12,7 @@ Action<{'id': string}, chrome.bookmarks.BookmarkTreeNode> = {
 }
 
 export const sortAllBookmarksAction: 
-Action<void, void> = {
+Action<{'options': Options}, void> = {
     name: 'sortAllBookmarks'
 }
 

@@ -48,14 +48,26 @@ document.addEventListener(
         let saveButton = (
             <HTMLButtonElement> document.getElementById('saveButton')
         )
+
+        let sortNowButton = (
+            <HTMLButtonElement> document.getElementById('sortNowButton')
+        )
+
         saveButton.onclick = async event => {
             saveButton.disabled = true
             let options = getOptionsInput()
             await sendMessage(saveOptionsAction, {options: options})
             if(options.automaticSorting) {
-            await sendMessage(sortAllBookmarksAction, null) 
+                await sendMessage(sortAllBookmarksAction, null) 
             }
             saveButton.disabled = false
+        }
+
+        sortNowButton.onclick = async event => {
+            sortNowButton.disabled = true
+            let options = getOptionsInput()
+            await sendMessage(sortAllBookmarksAction, {options: options}) 
+            sortNowButton.disabled = false
         }
         
         let orderInput = (
