@@ -1,4 +1,4 @@
 node_modules/
 .old/
 build/
-package-lock.json
+dist/

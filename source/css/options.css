@@ -1,0 +1,91 @@
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color-dark: #292929;
+        --bg-color-light: #3a3a38;
+        --fg-color-dark: #656565;
+        --fg-color-light: #b8b8b8;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-color-dark: #ffffff;
+        --bg-color-light: #ffffff;
+        --fg-color-dark: #000000;
+        --fg-color-light: #2f2f2f;
+    }
+}
+
+body {
+    background-color: var(--bg-color-dark);
+    color: var(--fg-color-light);
+    min-width: 300px;
+    zoom: 110%;
+}
+
+select, button, input[type='text'], input[type='checkbox'] {
+    background-color: var(--bg-color-light);
+    border: 1px solid var(--fg-color-dark);
+    color: var(--fg-color-light);
+}
+
+button:disabled {
+    filter: brightness(.85);
+}
+
+button:enabled:hover {
+    filter: brightness(1.15);
+}
+
+fieldset {
+    border: 1px solid var(--fg-color-dark);
+    border-radius: 2px;
+    padding-bottom: 16px;
+}
+
+fieldset > legend {
+    font-size: large;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+/* fieldset > legend {
+    cursor: pointer;
+} */
+
+/* .toggleableFieldSet .fieldSetToggler + legend {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.toggleableFieldSet .fieldSetToggler:not(:checked) + legend > label::before {
+    content: " [+] ";
+}
+
+.toggleableFieldSet .fieldSetToggler:checked + legend > label::before {
+    content: " [-] ";
+}
+
+.toggleableFieldSet .fieldSetToggler:not(:checked) ~ .content  {
+    display: none;
+} */
+
+/* .toggleableFieldSet:has(.fieldSetToggler:not(:checked)) .content {
+    height: 0;
+
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1s ease;
+}
+
+.toggleableFieldSet:has(.fieldSetToggler:checked) .content {
+    transform: scaleY(1);
+    transform-origin: top;
+    transition: transform 1s ease;
+} */
+
+
+/* .toggleableFieldSet .fieldSetToggler:checked ~ .content {
+    display: unset;
+} */

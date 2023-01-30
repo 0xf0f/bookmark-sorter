@@ -1,22 +1,26 @@
 {
+  "manifest_version": 3,
+
   "name": "Bookmark Sorter",
-  "version": "1.0",
-  "description": "Sorts bookmarks",
-  
-  "background": {
-    "page": "./source/html/background.html",
-      
-    "persistent": false
+  "version": "2.1",
+  "description": "Keeps bookmarks sorted",
+  "author": "0xf0f.dev@gmail.com",
+
+  "action": {
+    "default_popup": "./source/html/options.html"
   },
 
-  "browser_action": {
-    "default_popup": "./source/html/popup.html"
+  "background": {
+    "service_worker": "./build/background.js",
+    "type": "module"
+  },
+
+  "options_ui": {
+    "page": "./source/html/options.html"
   },
   
   "permissions": [
     "bookmarks",
-    "declarativeContent"
-  ],
-
-  "manifest_version": 2
+    "storage"
+  ]
 }
