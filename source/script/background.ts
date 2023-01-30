@@ -78,16 +78,16 @@ messageHandler.registerCallback(
 
 messageHandler.listen()
 
-chrome.runtime.onInstalled.addListener(
-    async details => {
-        if(details.reason == "install") {
-            // sort bookmarks for the first time
-            console.log('installed')
-            await messageHandler.queueAction(
-                sortAllBookmarksAction, {options: undefined}
-            )
-        }
-    }
-)
+// chrome.runtime.onInstalled.addListener(
+//     async details => {
+//         if(details.reason == "install") {
+//             // sort bookmarks for the first time
+//             console.log('installed')
+//             await messageHandler.queueAction(
+//                 sortAllBookmarksAction, {options: undefined}
+//             )
+//         }
+//     }
+// )
 
 enableAutoSortCallbacks()
