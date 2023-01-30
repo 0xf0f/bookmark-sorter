@@ -58,7 +58,7 @@ document.addEventListener(
             let options = getOptionsInput()
             await sendMessage(saveOptionsAction, {options: options})
             if(options.automaticSorting) {
-                await sendMessage(sortAllBookmarksAction, null) 
+                await sendMessage(sortAllBookmarksAction, {options: options}) 
             }
             saveButton.disabled = false
         }
