@@ -129,7 +129,7 @@ export async function sortBookmark(id: string) {
 
     if(
         disallowedAncestorIds.includes(parent.id) ||
-        hasAncestorWithIds(parent, disallowedAncestorIds)
+        await hasAncestorWithIds(parent, disallowedAncestorIds)
     ) {
         return
     }
