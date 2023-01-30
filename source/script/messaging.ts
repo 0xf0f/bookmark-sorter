@@ -26,10 +26,16 @@ export class MessageHandler {
         return this.callbacks[message.actionName]
     }
 
+    /** called before any set of messages are processed */
     preprocessingCallback: () => any = ()=>{}
 
+    /** called after any set of messages are processed */
     postprocessingCallback: () => any = ()=>{}
 
+    /** 
+     * registers a callback to invoke when receiving a message
+     * asking for a specific action to be performed
+     */
     registerCallback<InputType, OutputType>(
         action: Action<InputType, OutputType>,
         callback: (data: InputType) => Promise<OutputType>
@@ -38,6 +44,11 @@ export class MessageHandler {
         this.callbacks[action.name] = callback
     }
 
+    /**
+     * adds a listener callback to chrome's onMessage event handler
+     * which queues any received message for processing by this 
+     * message handler
+     */
     listen() {
         console.log('listening')
         chrome.runtime.onMessage.addListener(
@@ -53,6 +64,10 @@ export class MessageHandler {
         )
     }
 
+    /**
+     * queues a message in this message handler's message queue
+     * asking for a specific action to be performed
+     */
     queueAction<InputType, OutputType>(
         action: Action<InputType, OutputType>,
         data: InputType
@@ -103,6 +118,10 @@ export class MessageHandler {
     }
 }
 
+/**
+ * sends out a global message asking for a specific action to 
+ * be performed, waits for a response, then returns the result
+ */
 export async function sendMessage<InputType, OutputType>(
     action: Action<InputType, OutputType>, 
     data: InputType
