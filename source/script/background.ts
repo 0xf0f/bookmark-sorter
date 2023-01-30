@@ -16,6 +16,7 @@ import {
 } from './actions.js'
 
 import { 
+    loadOptions,
     saveOptions 
 } from './options.js'
 
@@ -52,7 +53,12 @@ messageHandler.registerCallback(
 
 messageHandler.registerCallback(
     sortBookmarkAction,
-    async data => sortBookmark(data.id)
+    async data => {
+        let options = await loadOptions()
+        if(options.automaticSorting) {
+            return await sortBookmark(data.id)
+        }
+    }
 )
 
 messageHandler.registerCallback(

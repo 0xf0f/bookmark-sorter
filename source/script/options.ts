@@ -6,6 +6,7 @@ export class Options {
     // mixFoldersAndPages: boolean = false
     sortBookmarksBar: boolean = false
     sortOtherBookmarks: boolean = false
+    automaticSorting: boolean = false
 }
 
 export async function loadOptions(): Promise<Options> {
