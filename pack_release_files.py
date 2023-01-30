@@ -49,6 +49,11 @@ for item in (
     else:
         shutil.copy(item, dist_extension_folder / item.name)
 
+# shutil.rmtree(
+#     dist_extension_folder / source_folder.name / 'script',
+#     ignore_errors=True
+# )
+
 subprocess.run(
     [
         'chrome', 
