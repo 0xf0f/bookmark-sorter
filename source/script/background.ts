@@ -30,58 +30,44 @@ function sortBookmarkCallback(id: string) {
     return messageHandler.queueAction(sortBookmarkAction, {id: id})
 }
 
-function enableCallbacks() {
+function enableAutoSortCallbacks() {
     chrome.bookmarks.onCreated.addListener(sortBookmarkCallback)
     chrome.bookmarks.onChanged.addListener(sortBookmarkCallback)
     chrome.bookmarks.onMoved.addListener(sortBookmarkCallback)
 }
 
-function disableCallbacks() {
+function disableAutoSortCallbacks() {
     chrome.bookmarks.onCreated.removeListener(sortBookmarkCallback)
     chrome.bookmarks.onChanged.removeListener(sortBookmarkCallback)
     chrome.bookmarks.onMoved.removeListener(sortBookmarkCallback)
 }
 
+messageHandler.preprocessingCallback = disableAutoSortCallbacks
+messageHandler.postprocessingCallback = enableAutoSortCallbacks
+
 messageHandler.registerCallback(
-    sortAllBookmarksAction, async () => {
-        disableCallbacks()
-        await sortAllBookmarks()
-        enableCallbacks()
-    }
+    sortAllBookmarksAction, 
+    sortAllBookmarks
 )
 
 messageHandler.registerCallback(
-    sortBookmarkAction, async data => {
-        disableCallbacks()
-        let result = await sortBookmark(data.id)
-        enableCallbacks()
-        return result
-    }
+    sortBookmarkAction,
+    async data => sortBookmark(data.id)
 )
 
 messageHandler.registerCallback(
-    saveOptionsAction, async data => {
-        disableCallbacks()
-        saveOptions(data.options)
-        enableCallbacks()
-    }
+    saveOptionsAction,
+    async data => saveOptions(data.options)
 )
 
 messageHandler.registerCallback(
-    getBookmarksOrderAction, async data => {
-        disableCallbacks()
-        let result = await getBookmarksOrder()
-        enableCallbacks()
-        return result
-    }
+    getBookmarksOrderAction, 
+    getBookmarksOrder
 )
 
 messageHandler.registerCallback(
-    applyBookmarksOrderAction, async data => {
-        disableCallbacks()
-        await applyBookmarksOrder(data.order)
-        enableCallbacks()
-    }
+    applyBookmarksOrderAction,
+    async data => applyBookmarksOrder(data.order)
 )
 
 messageHandler.listen()
@@ -96,4 +82,4 @@ chrome.runtime.onInstalled.addListener(
     }
 )
 
-enableCallbacks()
+enableAutoSortCallbacks()

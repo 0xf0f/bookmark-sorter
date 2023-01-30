@@ -26,6 +26,10 @@ export class MessageHandler {
         return this.callbacks[message.actionName]
     }
 
+    preprocessingCallback: () => any = ()=>{}
+
+    postprocessingCallback: () => any = ()=>{}
+
     registerCallback<InputType, OutputType>(
         action: Action<InputType, OutputType>,
         callback: (data: InputType) => Promise<OutputType>
@@ -74,6 +78,12 @@ export class MessageHandler {
             return
         }
         this.processing = true
+
+        let preprocessingResult = this.preprocessingCallback()
+        if(preprocessingResult instanceof Promise) {
+            await preprocessingResult
+        }
+
         while(this.messageQueue.length) {
             let item = this.messageQueue.shift()
             let callback = this.getCallback(item.message)
@@ -83,6 +93,12 @@ export class MessageHandler {
             }
             item.sendResponse(result)
         }
+
+        let postprocessingResult = this.postprocessingCallback()
+        if(postprocessingResult instanceof Promise) {
+            await postprocessingResult
+        }
+
         this.processing = false
     }
 }
