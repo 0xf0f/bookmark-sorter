@@ -91,6 +91,11 @@ async function getBookmarkTree(id: string) {
     return results[0]
 }
 
+async function getChildren(id: string) {
+    let results = await chrome.bookmarks.getChildren(id)
+    return results
+}
+
 async function moveBookmark(id: string, index: number) {
     return await chrome.bookmarks.move(
         id,
@@ -125,15 +130,13 @@ export async function sortBookmark(id: string) {
         disallowedAncestorIds.push('2')
     }
 
-    let parent = await getBookmarkTree(bookmark.parentId)
-
-    if(
-        disallowedAncestorIds.includes(parent.id) ||
-        await hasAncestorWithIds(parent, disallowedAncestorIds)
-    ) {
+    if(await hasAncestorWithIds(bookmark, disallowedAncestorIds)) {
         return
     }
 
+    let children = await getChildren(bookmark.parentId)
+    if(children.length == 1) return
+    
     let comparator: Comparator
 
     if(isFolder(bookmark)) {
@@ -142,11 +145,9 @@ export async function sortBookmark(id: string) {
         comparator = getPageComparator(options)
     }
 
-    if(parent.children.length == 1) return
+    let newIndex = children.length
 
-    let newIndex = parent.children.length
-
-    for(let other of parent.children) {
+    for(let other of children) {
         if(other.id == bookmark.id) {
             continue
         }
