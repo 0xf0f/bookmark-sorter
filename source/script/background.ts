@@ -1,3 +1,13 @@
+import { 
+    loadOptions,
+    saveOptions 
+} from './options.js'
+
+import {
+    getBookmarksOrder,
+    applyBookmarksOrder,
+} from './order.js'
+
 import {
     sortBookmark, 
     sortAllBookmarks,
@@ -14,16 +24,6 @@ import {
     getBookmarksOrderAction,
     applyBookmarksOrderAction, 
 } from './actions.js'
-
-import { 
-    loadOptions,
-    saveOptions 
-} from './options.js'
-
-import {
-    getBookmarksOrder,
-    applyBookmarksOrder,
-} from './order.js'
 
 const messageHandler = new MessageHandler()
 

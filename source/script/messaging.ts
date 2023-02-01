@@ -1,14 +1,15 @@
 import { Action } from './actions.js'
+
 interface Message {
     actionName: string
     data?: any
 }
 
-
 type MessageQueueItem = {
     message: Message,
     sendResponse: (response?: any)=>void
 }
+
 export class MessageHandler {
     private callbacks: {
         [actionName: string]: (data: any) => Promise<any>

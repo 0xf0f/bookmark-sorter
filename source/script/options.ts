@@ -26,7 +26,6 @@ export async function loadOptions(): Promise<Options> {
     return cachedOptions
 }
 
-
 export async function saveOptions(options: Options) {
     cachedOptions = options
     return await chrome.storage.sync.set({'options': options})
