@@ -12,8 +12,9 @@ It can be turned on through the extension popup or options page, as well as sele
 The criteria and ordering of folder and page sorting can also be changed. Pages can be sorted by name, URL, or date added. Folders can be sorted by name or date added.
 
 ### How do I install it?
-<!-- 
-##### From the Web Store: -->
+
+##### From the Web Store:
+Visit the extension's [chrome web store page](https://chrome.google.com/webstore/detail/bookmark-sorter/ejmfjgojeggmnimbmfbciimblijbemhd), and click 'Add to Chrome'.
 
 ##### From GitHub:
 Grab and extract zipped release from the [releases section](https://github.com/0xf0f/bookmark-sorter/releases), then:
