@@ -6,7 +6,7 @@
     "url": "https://github.com/0xf0f/bookmark-sorter"
   },
   "license": "MIT",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "devDependencies": {
     "@types/chrome": "0.0.210",
     "typescript": "^3.9.10"
