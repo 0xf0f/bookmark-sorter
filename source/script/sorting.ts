@@ -9,14 +9,7 @@ interface Comparator {
     (
         self: BookmarkTreeNode, 
         other: BookmarkTreeNode, 
-    ) : -1 | 0 | 1
-}
-
-interface ComparatorComponent {
-    (
-        self: BookmarkTreeNode,
-        other: BookmarkTreeNode,
-    ) : boolean
+    ) : number
 }
 
 function isFolder(node: BookmarkTreeNode) {
@@ -24,58 +17,63 @@ function isFolder(node: BookmarkTreeNode) {
 }
 
 function getPageComparator(options: Options): Comparator {
-
-    let compareCriteria: ComparatorComponent
-    let compareOrder: ComparatorComponent
+    let compareCriteria: Comparator
+    let compareOrder: Comparator
 
     switch(options.pageSortCriteria) {
         case 'date':
-            compareCriteria = (self, other) => self.dateAdded < other.dateAdded
+            compareCriteria = (self, other) => self.dateAdded - other.dateAdded
             break
         case 'name':
-            compareCriteria = (self, other) => self.title.localeCompare(other.title) < 0
+            compareCriteria = (self, other) => self.title.localeCompare(other.title)
             break
         case 'url':
-            compareCriteria = (self, other) => self.url.localeCompare(other.url) < 0
+            compareCriteria = (self, other) => self.url.localeCompare(other.url)
             break
     }
 
-    if (options.pageSortOrder === 'descending') {
-        compareOrder = (self, other) => !compareCriteria(self, other)
-    } else {
-        compareOrder = compareCriteria
+    switch (options.pageSortOrder) {
+        case 'descending':
+            compareOrder = (self, other) => -compareCriteria(self, other)
+            break
+        case 'ascending':
+            compareOrder = compareCriteria
+            break
     }
 
     return (self, other) => {
         if(isFolder(other)) {
             return 1
         }
-        return compareOrder(self, other) ? -1 : 1
+        return compareOrder(self, other)
     }
 }
 
 function getFolderComparator(options: Options): Comparator {
-    let compareCriteria: ComparatorComponent
-    let compareOrder: ComparatorComponent
+    let compareCriteria: Comparator
+    let compareOrder: Comparator
 
     switch(options.folderSortCriteria) {
         case 'date':
-            compareCriteria = (self, other) => self.dateAdded < other.dateAdded
+            compareCriteria = (self, other) => self.dateAdded - other.dateAdded
             break
         case 'name':
-            compareCriteria = (self, other) => self.title.localeCompare(other.title) < 0
+            compareCriteria = (self, other) => self.title.localeCompare(other.title)
             break
     }
 
-    if (options.folderSortOrder === 'descending') {
-        compareOrder = (self, other) => !compareCriteria(self, other)
-    } else {
-        compareOrder = compareCriteria
+    switch (options.folderSortOrder) {
+        case 'descending':
+            compareOrder = (self, other) => -compareCriteria(self, other)
+            break
+        case 'ascending':
+            compareOrder = compareCriteria
+            break
     }
 
     return (self, other) => {
         if(isFolder(other)) {
-            return compareOrder(self, other) ? -1 : 1
+            return compareOrder(self, other)
         }
         return -1
     }
@@ -135,6 +133,7 @@ export async function sortBookmark(id: string) {
     }
 
     let children = await getChildren(bookmark.parentId)
+    
     if(children.length == 1) return
     
     let comparator: Comparator
@@ -148,11 +147,10 @@ export async function sortBookmark(id: string) {
     let newIndex = children.length
 
     for(let other of children) {
-        if(other.id == bookmark.id) {
-            continue
-        }
-
-        if(comparator(bookmark, other) < 1) {
+        if(
+            comparator(bookmark, other) <= 0 &&
+            other.id != bookmark.id
+        ) {
             // console.log(bookmark)
             // console.log(other)
             newIndex = other.index
@@ -167,11 +165,11 @@ export async function sortAllBookmarks(options?: Options) {
     if(!options) {
         options = await loadOptions()
     }
+
     let pageComparator = getPageComparator(options)
     let folderComparator = getFolderComparator(options)
     
-    
-    let stack = []
+    let stack: BookmarkTreeNode[] = []
     if(options.sortBookmarksBar) {
         stack.push(await getBookmarkTree('1'))
     }
