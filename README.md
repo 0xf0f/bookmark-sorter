@@ -1,13 +1,12 @@
 ### What is this?
-Chrome extension that automatically keeps bookmarks sorted. Made primarily for personal use. 
+A chrome extension for sorting bookmarks automatically and on demand.
 
 Its default sorting rules are:
-- Group folders and files separately
-- Sort folders alphabetically, in ascending order
-- Sort pages by date added, in descending order
+- Group pages and folders separately.
+- Sort folders by name in ascending order.
+- Sort pages by date added in descending order.
 
-Automatic sorting is turned off by default to prevent unwanted changes to bookmark order upon installation.
-It can be turned on through the extension popup or options page, as well as selecting which folders to keep sorted.
+Automatic sorting is turned off by default to prevent unwanted changes to bookmark order upon installation. It can be turned on through the extension popup or options page, as well as selecting which folders to keep sorted.
 
 The criteria and ordering of folder and page sorting can also be changed. Pages can be sorted by name, URL, or date added. Folders can be sorted by name or date added.
 
