@@ -10,6 +10,18 @@ type MessageQueueItem = {
     sendResponse: (response?: any)=>void
 }
 
+/**
+ * the main goal of this class is to serialize async calls from multiple 
+ * parts of the extension which need to run with mutual exclusivity.
+ * 
+ * it makes it easier to enable/disable automatic sorting callbacks 
+ * to avoid infinite callback loops when updating bookmark positions.
+ * 
+ * also, browsers might have different approaches to messaging. 
+ * if the extension is updated to support multiple browsers in the future, 
+ * having a backend agnostic message handling layer can reduce the effort of dealing 
+ * with that.
+ */
 export class MessageHandler {
     private callbacks: {
         [actionName: string]: (data: any) => Promise<any>
@@ -66,7 +78,7 @@ export class MessageHandler {
     }
 
     /**
-     * queues a message in this message handler's message queue
+     * adds a message to this handler's queue
      * asking for a specific action to be performed
      */
     queueAction<InputType, OutputType>(
