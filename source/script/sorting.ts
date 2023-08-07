@@ -43,7 +43,7 @@ function getPageComparator(options: Options): Comparator {
 
     return (self, other) => {
         if(isFolder(other)) {
-            return 1
+            return Infinity
         }
         return compareOrder(self, other)
     }
@@ -75,7 +75,7 @@ function getFolderComparator(options: Options): Comparator {
         if(isFolder(other)) {
             return compareOrder(self, other)
         }
-        return -1
+        return -Infinity
     }
 }
 
